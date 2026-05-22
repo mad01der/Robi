@@ -8,6 +8,7 @@ venv/
 *.pth
 atla_test/
 atla_test_results*/
+../../tf-logs/
 atla_models*/
 
 # IDE
