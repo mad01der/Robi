@@ -28,19 +28,21 @@ TRAIN_SEQ_LEN = 500
 TRAIN_EPOCH = 500000
 MODEL_SAVE_INTERVAL = 30
 RANDOM_SEED = 42
-LOG_ROOT = os.path.normpath('../../tf-logs')
-SUMMARY_DIR = LOG_ROOT
-TEST_LOG_FOLDER = os.path.join(LOG_ROOT, 'test_results')
-LOG_FILE = os.path.join(SUMMARY_DIR, 'atla_log')
+SUMMARY_DIR = './atla_test'
+TEST_LOG_FOLDER = './atla_test_results_test/'
+LOG_FILE = SUMMARY_DIR + '/atla_log'
 
-os.makedirs(SUMMARY_DIR, exist_ok=True)
-os.makedirs(TEST_LOG_FOLDER, exist_ok=True)
+# create result directory
+if not os.path.exists(SUMMARY_DIR):
+    os.makedirs(SUMMARY_DIR)
 
 ADV_NN_MODEL = None
 AGENT_NN_MODEL = None
 
 def testing(epoch, nn_model, log_file):
     # 为每个模型创建单独的测试结果文件夹并运行测试
+    if not os.path.exists(TEST_LOG_FOLDER):
+        os.makedirs(TEST_LOG_FOLDER)
     model_base = os.path.splitext(os.path.basename(nn_model))[0]
     model_out_dir = os.path.join(TEST_LOG_FOLDER, model_base)
     os.makedirs(model_out_dir, exist_ok=True)
@@ -230,7 +232,7 @@ def main():
                 avg_reward_phase1 = np.mean(r_batch)
                 print(f"Epoch {epoch} Phase1 - Avg Reward: {avg_reward_phase1:.4f}, Agent Loss: {agent_loss:.4f}, Entropy: {agent_entropy:.4f}")
                 if epoch > 0 and epoch % MODEL_SAVE_INTERVAL == 0:
-                    model_path = os.path.join(SUMMARY_DIR, 'agent_nn_model_ep_' + str(epoch) + '.pth')
+                    model_path = SUMMARY_DIR + '/agent_nn_model_ep_' + str(epoch) + '.pth'
                     agent.save_model(model_path)
                     print("开始测试模型...")
                     avg_reward, avg_entropy = testing(epoch, model_path, test_log_file)
@@ -275,33 +277,33 @@ def main():
                 avg_reward_phase2 = np.mean(r_batch)
                 print(f"Epoch {epoch} Phase2 - Avg Reward: {avg_reward_phase2:.4f}, Adv Loss: {adv_loss:.4f}")
                 if epoch % MODEL_SAVE_INTERVAL == 0:
-                    model_path = os.path.join(SUMMARY_DIR, 'adv_nn_model_ep_' + str(epoch) + '.pth')
+                    model_path = SUMMARY_DIR + '/adv_nn_model_ep_' + str(epoch) + '.pth'
                     adversary.save_model(model_path)
                     print(f"   adv_loss: {adv_loss}")
                 try:
-                    agent.save_model(os.path.join(SUMMARY_DIR, 'agent_nn_model_latest.pth'))
+                    agent.save_model(SUMMARY_DIR + '/agent_nn_model_latest.pth')
                 except Exception:
                     pass
                 try:
-                    adversary.save_model(os.path.join(SUMMARY_DIR, 'adv_nn_model_latest.pth'))
+                    adversary.save_model(SUMMARY_DIR + '/adv_nn_model_latest.pth')
                 except Exception:
                     pass
                 writer.flush()
         except KeyboardInterrupt:
             try:
-                agent.save_model(os.path.join(SUMMARY_DIR, 'agent_nn_model_ep_' + str(epoch) + '.pth'))
+                agent.save_model(SUMMARY_DIR + '/agent_nn_model_ep_' + str(epoch) + '.pth')
             except Exception:
                 pass
             try:
-                adversary.save_model(os.path.join(SUMMARY_DIR, 'adv_nn_model_ep_' + str(epoch) + '.pth'))
+                adversary.save_model(SUMMARY_DIR + '/adv_nn_model_ep_' + str(epoch) + '.pth')
             except Exception:
                 pass
             try:
-                agent.save_model(os.path.join(SUMMARY_DIR, 'agent_nn_model_latest.pth'))
+                agent.save_model(SUMMARY_DIR + '/agent_nn_model_latest.pth')
             except Exception:
                 pass
             try:
-                adversary.save_model(os.path.join(SUMMARY_DIR, 'adv_nn_model_latest.pth'))
+                adversary.save_model(SUMMARY_DIR + '/adv_nn_model_latest.pth')
             except Exception:
                 pass
             print(f'训练已中断，已保存模型至 epoch {epoch}')

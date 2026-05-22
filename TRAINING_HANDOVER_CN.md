@@ -145,8 +145,8 @@
 - `TRAIN_EPOCH = 500000`：总训练 epoch。
 - `MODEL_SAVE_INTERVAL = 30`：每隔多少 epoch 保存并测试。
 - `RANDOM_SEED = 42`：随机种子。
-- `SUMMARY_DIR` / `LOG_ROOT`：模型与 TensorBoard 主目录（`../../tf-logs/`）。
-- `TEST_LOG_FOLDER`：测试日志输出目录（`../../tf-logs/test_results/`）。
+- `SUMMARY_DIR`：模型与 TensorBoard 主目录（当前 `./atla_huawei_300k_delta`）。
+- `TEST_LOG_FOLDER`：测试日志输出目录。
 - `ADV_NN_MODEL` / `AGENT_NN_MODEL`：手动指定预训练模型路径（默认 `None`）。
 
 ## 5.2 Agent 参数（`ATLA_agent.py`）
