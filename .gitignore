@@ -1,0 +1,19 @@
+﻿__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# 训练输出 / 模型（体积大，一般不上传）
+*.pth
+atla_test/
+atla_test_results*/
+atla_models*/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# TensorBoard
+events.out.tfevents.*
